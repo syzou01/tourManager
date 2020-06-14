@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">tourManage</string>
+    <string name="keyWordEnter">城市旅行目的地查询</string>
+    <string name="keyWordHint">请输入待搜索的城市</string>
+    <string name="keyWord"> </string>
+    <string name="ok">确定</string>
 </resources>
