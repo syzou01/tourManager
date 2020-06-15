@@ -62,6 +62,13 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
             }
         };//匿名类的改写
 
+        //将题目放入data中
+        data.clear();
+        for(int i=0;i<titleList.size();i++){
+            String Str = (String) titleList.get(i);
+            data.add(Str);//将题目放进列表中显示
+        }
+
         //添加点击事件监听
         mListView = findViewById(R.id.List);
         mListView.setOnItemClickListener(this);
@@ -69,6 +76,8 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         mListView = findViewById(R.id.List);
         mAdapter = new ArrayAdapter(ListActivity.this,R.layout.adapter_list,data);
         mListView.setAdapter(mAdapter);
+
+
     }
 
     @Override
