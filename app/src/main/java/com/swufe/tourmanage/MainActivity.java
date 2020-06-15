@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,6 +18,8 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.swufe.tourmanage.R;
@@ -43,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<String> data = new ArrayList<String>(){{add("");}};
     private ListView mListView;
     private ListAdapter mAdapter;
+    public static String TAG = "MainActivity:";
     Handler handler;
 
     @Override
@@ -108,12 +113,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int po = titleList.indexOf(data.get(position));
         String url = (String) urlList.get(po);
         url = "https:"+url;
-        Log.i("Note","url="+url);
+        //Log.i("Note","url="+url);
+
+        //将url传入SharedPreference
+        SharedPreferences sp = getSharedPreferences("curUrl", Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = sp.edit();
+        edit.putString("curUrl",url);
+        edit.commit();
+        Log.i("saveUrl","传入url结束："+url);
+
+        //打开列表页
+        OpenList();
+
+        /*//打开当前url对应网页
         Intent intent = new Intent();
         intent.setAction("android.intent.action.VIEW");
         Uri content_url = Uri.parse(url);
         intent.setData(content_url);
-        startActivity(intent);
+        startActivity(intent);*/
     }
 
     @Override
@@ -136,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //列表
         mListView = findViewById(R.id.List);
-        mAdapter = new ArrayAdapter(MainActivity.this,android.R.layout.simple_list_item_1,data);
+        mAdapter = new ArrayAdapter(MainActivity.this,R.layout.adapter_list,data);
         mListView.setAdapter(mAdapter);
 
         //没有内容的Toast
@@ -172,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Document doc = null;
         try {
             doc = Jsoup.connect("https://you.ctrip.com/sitemap/spotdis/c0").get();
-            Log.i("Note","run:  "+ doc.title());
+            //Log.i("Note","run:  "+ doc.title());
             Elements titles = doc.getElementsByAttributeValueEnding("title","景点");
             Elements urls = doc.getElementsByAttributeValueStarting("href","//you.ctrip.com/sight/");
             Log.i("Note","run:  article-showTitle"+ titles);
@@ -186,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             i=0;
             for(Element url:urls){
-                Log.i("Note","run:  article-showUrl:"+ url.attr("href"));
+                //Log.i("Note","run:  article-showUrl:"+ url.attr("href"));
                 ArrayList b = new ArrayList(urlList);
                 b.add(i,url.attr("href"));
                 urlList = b;
@@ -234,6 +251,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==R.id.menu_shake){
+            OpenShake();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void OpenShake() {
+        Intent shake = new Intent(this, ShakeActivity.class);
+        Log.i(TAG, "openShake" );
+        startActivityForResult(shake, 1);
+    }
+
+    private void OpenList() {
+        Intent list = new Intent(this, ListActivity.class);
+        Log.i(TAG, "openList" );
+        startActivityForResult(list,2);
+    }
 }
 

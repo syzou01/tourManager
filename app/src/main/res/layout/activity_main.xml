@@ -5,36 +5,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/background2"
+    android:scrollbarStyle="insideInset"
     tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/keyWordEnter"
+        android:fontFamily="monospace"
         android:gravity="center"
-        android:textSize="24sp"/>
+        android:text="@string/keyWordEnter"
+        android:textSize="36sp"
+        android:textColor="@color/primary_text"/>
 
     <EditText
         android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autofillHints="@string/keyWordHint"
         android:hint="@string/keyWordHint"
         android:inputType="text"
         android:text="@string/keyWord"
         android:textSize="24sp"
-        />
+        android:textColor="@color/icons"/>
 
     <Button
         android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/ok"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textColor="@color/icons"/>
 
     <ListView
         android:id="@+id/List"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_width="532dp"
+        android:layout_height="wrap_content"
+        android:cacheColorHint="@android:color/transparent"
+        android:textColor="@color/icons"
+        android:choiceMode="singleChoice">
+    </ListView>
 
 </LinearLayout>

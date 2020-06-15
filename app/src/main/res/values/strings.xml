@@ -4,4 +4,7 @@
     <string name="keyWordHint">请输入待搜索的城市</string>
     <string name="keyWord"> </string>
     <string name="ok">确定</string>
+    <string name="place_img">目的地图片</string>
+    <string name="shake_hint">摇一摇</string>
+    <string name="planTool">日程规划计算器</string>
 </resources>
