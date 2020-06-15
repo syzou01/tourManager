@@ -84,7 +84,7 @@ public class ShakeActivity extends AppCompatActivity {
             float y = values[1];
             float z = values[2];
             Log.i(TAG, "onSensorChanged: x:"+x+"y:"+y+"z:"+z);
-            int medumValue = 10;
+            int medumValue = 25;
             if(Math.abs(x)>medumValue||Math.abs(y)>medumValue||Math.abs(z)>medumValue){
                 vibrater.vibrate(200);
                 Message msg = new Message();

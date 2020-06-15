@@ -86,6 +86,7 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         mListView = findViewById(R.id.List1);
         //添加点击事件监听
         mListView.setOnItemClickListener(this);
+
     }
 
     @Override
@@ -100,8 +101,8 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         Log.i("Note","data="+data.get(position));
         int po = titleList.indexOf(data.get(position));
         String url = (String) urlList.get(po);
-        url = "https:"+url;
-        //Log.i("Note","url="+url);
+        url = "https://you.ctrip.com"+url;
+        Log.i("Note","url="+url);
 
         //打开当前url对应网页
         Intent intent = new Intent();
@@ -115,7 +116,6 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void run() {
         Log.i("Note","run():running.....");
-
 
         //从网络中获取数据
         Document doc = null;
@@ -150,8 +150,5 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         Message msg2 = handler.obtainMessage(2);
         msg2.obj=urlList;//message的内容
         handler.sendMessage(msg2);//发送message
-
-
-
     }
 }

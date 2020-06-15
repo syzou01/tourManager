@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Log.i("Note","handleMessage: get titleList");
                 }
                 if(msg.what==2){
-                    List titleList = (List) msg.obj;
+                    List urlList = (List) msg.obj;
                     Log.i("Note","handleMessage: get urlList");
                 }
                 super.handleMessage(msg);
