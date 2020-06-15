@@ -114,7 +114,8 @@ public class ShakeActivity extends AppCompatActivity {
 
                     int num = Math.abs(r.nextInt(titleList.size()));
                     text.setText((String)titleList.get(num));
-                    url=(String)urlList.get(num);
+                    url="https://"+(String)urlList.get(num);
+                    Log.i(TAG, "url: "+url);
                     break;
             }
         }
@@ -122,6 +123,7 @@ public class ShakeActivity extends AppCompatActivity {
 
     public void onClick(View v) {
 
+        Log.i(TAG, "onClick: ...");
         //打开当前url对应网页
         Intent intent = new Intent();
         intent.setAction("android.intent.action.VIEW");
