@@ -192,10 +192,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //Log.i("Note","run:  "+ doc.title());
             Elements titles = doc.getElementsByAttributeValueEnding("title","景点");
             Elements urls = doc.getElementsByAttributeValueStarting("href","//you.ctrip.com/sight/");
-            Log.i("Note","run:  article-showTitle"+ titles);
+            //Log.i("Note","run:  article-showTitle"+ titles);
             int i = 0;
             for(Element title:titles){
-                Log.i("Note","run:  Title:"+ title.text());
+                //Log.i("Note","run:  Title:"+ title.text());
                 ArrayList a = new ArrayList(titleList);
                 a.add(i,title.text());
                 titleList = a;

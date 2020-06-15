@@ -25,6 +25,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 public class ListActivity extends AppCompatActivity implements View.OnClickListener, Runnable, AdapterView.OnItemClickListener {
@@ -44,8 +45,12 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_list);
 
         SharedPreferences sp = getSharedPreferences("curUrl", Activity.MODE_PRIVATE);
-        curUrl = sp.getString("update_date","https://you.ctrip.com/sight/chuzhou228.html");
+        curUrl = sp.getString("curUrl","https://you.ctrip.com/sight/chuzhou228.html");
         Log.i("Note","current url="+curUrl);
+
+        //开启子线程
+        Thread t = new Thread(this);
+        t.start();
 
         //从子线程中获得消息
         handler = new Handler(){
@@ -67,6 +72,7 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         for(int i=0;i<titleList.size();i++){
             String Str = (String) titleList.get(i);
             data.add(Str);//将题目放进列表中显示
+            Log.i("data","Str="+Str);
         }
 
         //添加点击事件监听
@@ -95,7 +101,6 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         url = "https:"+url;
         //Log.i("Note","url="+url);
 
-
         //打开当前url对应网页
         Intent intent = new Intent();
         intent.setAction("android.intent.action.VIEW");
@@ -121,11 +126,24 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         Document doc = null;
         try {
             doc = Jsoup.connect(curUrl).get();
-            //Log.i("Note","run:  "+ doc.title());
-            Elements titles = doc.getElementsByClass("sight");
-            Elements urls = doc.getElementsByAttributeValueEnding("href",".html");
-            Log.i("Note","run:  article-showTitle"+ titles);
-            int i = 0;
+            Log.i("Note","run:  "+ doc.title());
+            ArrayList a = new ArrayList(titleList);
+            ArrayList b = new ArrayList(urlList);
+
+            Elements elements = doc.select("body > div.ttd2_background > div > div.des_wide.f_right > div > div.list_wide_mod2 > div > div.rdetailbox");
+            Iterator<Element> iterator = elements.iterator();
+            while (iterator.hasNext()) {
+                Element element = iterator.next();
+                Elements aTag = element.getElementsByTag("a");
+                a.add(aTag.attr("title"));
+                b.add(aTag.attr("href"));
+                titleList = a;
+                urlList = b;
+            }
+
+            //Log.i("Note","run:  article-showTitle"+ titles);
+            //Log.i("Note","run:  article-showUrl"+ urls);
+            /*int i = 0;
             for(Element title:titles){
                 Log.i("Note","run:  Title:"+ title.text());
                 ArrayList a = new ArrayList(titleList);
@@ -135,12 +153,12 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
             }
             i=0;
             for(Element url:urls){
-                //Log.i("Note","run:  article-showUrl:"+ url.attr("href"));
+                Log.i("Note","run:  article-showUrl:"+ url.attr("href"));
                 ArrayList b = new ArrayList(urlList);
                 b.add(i,url.attr("href"));
                 urlList = b;
                 i++;
-            }
+            }*/
         } catch (IOException e) {
             e.printStackTrace();
         }

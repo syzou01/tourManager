@@ -3,16 +3,19 @@ package com.swufe.tourmanage;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,13 +28,12 @@ public class ShakeActivity extends AppCompatActivity {
 
     private SensorManager sensorManager;
     private Vibrator vibrater;
-    private static int pics[] = {R.mipmap.img1,R.mipmap.img2,R.mipmap.img3,R.mipmap.img4,R.mipmap.img5,R.mipmap.img6,R.mipmap.img7};
 
     private ArrayList<String> titleList= new ArrayList<String>(){{add("");}};
     private ArrayList<String> urlList = new ArrayList<String>(){{add("");}};
 
     private TextView text;
-    private ImageView img;
+    private String url = "https://you.ctrip.com/sitemap/spotdis/c0";
 
     private static final String TAG = "ShakeActivity";
     private static final int SENSOR_SHAKE = 10;
@@ -42,7 +44,6 @@ public class ShakeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_shake);
 
         text = (TextView)findViewById(R.id.place);
-        img = (ImageView)findViewById(R.id.imageView);
 
         sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         vibrater = (Vibrator) getSystemService(VIBRATOR_SERVICE);
@@ -83,7 +84,7 @@ public class ShakeActivity extends AppCompatActivity {
             float y = values[1];
             float z = values[2];
             Log.i(TAG, "onSensorChanged: x:"+x+"y:"+y+"z:"+z);
-            int medumValue = 25;
+            int medumValue = 10;
             if(Math.abs(x)>medumValue||Math.abs(y)>medumValue||Math.abs(z)>medumValue){
                 vibrater.vibrate(200);
                 Message msg = new Message();
@@ -104,19 +105,28 @@ public class ShakeActivity extends AppCompatActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case SENSOR_SHAKE:
-                    Toast.makeText(ShakeActivity.this, "已向您随机推荐旅行地！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ShakeActivity.this, "已向您随机推荐旅行地！点击按钮查看详情", Toast.LENGTH_SHORT).show();
                     Log.i(TAG, "检测到摇晃，执行操作！");
                     java.util.Random r = new java.util.Random();
 
                     loadList(titleList,"title");
                     loadList(urlList,"url");
 
-                    int num1 = Math.abs(r.nextInt(titleList.size()));
-                    int num2 = Math.abs(r.nextInt(7))+1;
-                    text.setText((String)titleList.get(num1));
-                    img.setImageResource(pics[num2]);
+                    int num = Math.abs(r.nextInt(titleList.size()));
+                    text.setText((String)titleList.get(num));
+                    url=(String)urlList.get(num);
                     break;
             }
         }
     };
+
+    public void onClick(View v) {
+
+        //打开当前url对应网页
+        Intent intent = new Intent();
+        intent.setAction("android.intent.action.VIEW");
+        Uri content_url = Uri.parse(url);
+        intent.setData(content_url);
+        startActivity(intent);
+    }
 }
