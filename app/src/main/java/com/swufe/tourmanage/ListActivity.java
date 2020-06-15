@@ -57,33 +57,35 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
             public void handleMessage(Message msg){
                 if(msg.what==1){
                     List titleList = (List) msg.obj;
-                    Log.i("Note","handleMessage: get titleList");
+                    Log.i("Note","handleMessage: get titleList"+titleList);
                 }
+
+                //将题目放入data中
+                data.clear();
+                Log.i("data","titleList="+titleList);
+                for(int i=1;i<titleList.size();i++){
+                    String Str = (String) titleList.get(i);
+                    Log.i("data1111","Str="+Str);
+                    data.add(Str);//将题目放进列表中显示
+                }
+
+                mListView = findViewById(R.id.List1);
+                mAdapter = new ArrayAdapter(ListActivity.this,R.layout.adapter_list2, data);
+                mListView.setAdapter(mAdapter);
+
+                Log.i("data","data="+data);
                 if(msg.what==2){
-                    List titleList = (List) msg.obj;
-                    Log.i("Note","handleMessage: get urlList");
+                    List urlList = (List) msg.obj;
+                    Log.i("Note","handleMessage: get urlList"+urlList);
                 }
                 super.handleMessage(msg);
             }
         };//匿名类的改写
 
-        //将题目放入data中
-        data.clear();
-        for(int i=0;i<titleList.size();i++){
-            String Str = (String) titleList.get(i);
-            data.add(Str);//将题目放进列表中显示
-            Log.i("data","Str="+Str);
-        }
-
+        //获取控件
+        mListView = findViewById(R.id.List1);
         //添加点击事件监听
-        mListView = findViewById(R.id.List);
         mListView.setOnItemClickListener(this);
-
-        mListView = findViewById(R.id.List);
-        mAdapter = new ArrayAdapter(ListActivity.this,R.layout.adapter_list,data);
-        mListView.setAdapter(mAdapter);
-
-
     }
 
     @Override
@@ -109,18 +111,11 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intent);
     }
 
+
     @Override
     public void run() {
         Log.i("Note","run():running.....");
 
-        //获取message对象用于返回主线程
-        Message msg1 = handler.obtainMessage(1);
-        //msg.what = 1;//设置一个整数，用于标记message
-        msg1.obj=titleList;//message的内容
-        handler.sendMessage(msg1);//发送message
-        Message msg2 = handler.obtainMessage(2);
-        msg2.obj=urlList;//message的内容
-        handler.sendMessage(msg2);//发送message
 
         //从网络中获取数据
         Document doc = null;
@@ -137,30 +132,26 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
                 Elements aTag = element.getElementsByTag("a");
                 a.add(aTag.attr("title"));
                 b.add(aTag.attr("href"));
-                titleList = a;
-                urlList = b;
+                Log.i("Note","run:  Title:"+ aTag.attr("title"));
+                Log.i("Note","run:  Url:"+ aTag.attr("href"));
             }
+            titleList = a;
+            urlList = b;
 
-            //Log.i("Note","run:  article-showTitle"+ titles);
-            //Log.i("Note","run:  article-showUrl"+ urls);
-            /*int i = 0;
-            for(Element title:titles){
-                Log.i("Note","run:  Title:"+ title.text());
-                ArrayList a = new ArrayList(titleList);
-                a.add(i,title.text());
-                titleList = a;
-                i++;
-            }
-            i=0;
-            for(Element url:urls){
-                Log.i("Note","run:  article-showUrl:"+ url.attr("href"));
-                ArrayList b = new ArrayList(urlList);
-                b.add(i,url.attr("href"));
-                urlList = b;
-                i++;
-            }*/
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        //获取message对象用于返回主线程
+        Message msg1 = handler.obtainMessage(1);
+        //msg.what = 1;//设置一个整数，用于标记message
+        msg1.obj=titleList;//message的内容
+        handler.sendMessage(msg1);//发送message
+        Message msg2 = handler.obtainMessage(2);
+        msg2.obj=urlList;//message的内容
+        handler.sendMessage(msg2);//发送message
+
+
+
     }
 }

@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background1"
+    android:background="@drawable/background3"
     android:orientation="vertical"
     tools:context=".ListActivity">
 
     <ListView
-        android:id="@+id/List"
+        android:id="@+id/List1"
         android:layout_width="532dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:cacheColorHint="@android:color/transparent"
         android:choiceMode="singleChoice"></ListView>
 
