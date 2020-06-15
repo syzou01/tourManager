@@ -113,7 +113,7 @@ public class ShakeActivity extends AppCompatActivity {
                     loadList(urlList,"url");
 
                     int num = Math.abs(r.nextInt(titleList.size()));
-                    text.setText((String)titleList.get(num));
+                    text.setText((String)titleList.get(num).substring(0,titleList.get(num).length()-2));
                     url="https://"+(String)urlList.get(num);
                     Log.i(TAG, "url: "+url);
                     break;
