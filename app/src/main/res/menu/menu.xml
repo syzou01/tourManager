@@ -6,7 +6,5 @@
     <item
         android:id="@+id/menu_shake"
         android:title="@string/shake_hint" />
-    <item
-        android:id="@+id/menu_plan"
-        android:title="@string/planTool" />
+
 </menu>

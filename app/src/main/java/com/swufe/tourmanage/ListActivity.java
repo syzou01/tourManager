@@ -70,7 +70,7 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 mListView = findViewById(R.id.List1);
-                mAdapter = new ArrayAdapter(ListActivity.this,R.layout.adapter_list2, data);
+                mAdapter = new ArrayAdapter(ListActivity.this,R.layout.adapter_list, data);
                 mListView.setAdapter(mAdapter);
 
                 Log.i("data","data="+data);
