@@ -167,14 +167,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void run() {
         Log.i("Note","run():running.....");
-        for(int i=1;i<3;i++){
-            Log.i("Note","run():i="+i);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
 
         //获取message对象用于返回主线程
         Message msg1 = handler.obtainMessage(1);
