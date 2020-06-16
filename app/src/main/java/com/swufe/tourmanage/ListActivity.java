@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -44,6 +45,8 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+        Toast.makeText(ListActivity.this,"正在获取景点数据，请稍候...",Toast.LENGTH_SHORT).show();
+
         SharedPreferences sp = getSharedPreferences("curUrl", Activity.MODE_PRIVATE);
         curUrl = sp.getString("curUrl","https://you.ctrip.com/sight/chuzhou228.html");
         Log.i("Note","current url="+curUrl);
@@ -57,7 +60,7 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
             public void handleMessage(Message msg){
                 if(msg.what==1){
                     List titleList = (List) msg.obj;
-                    Log.i("Note","handleMessage: get titleList"+titleList);
+                    //Log.i("Note","handleMessage: get titleList"+titleList);
                 }
 
                 //将题目放入data中
@@ -65,7 +68,7 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
                 Log.i("data","titleList="+titleList);
                 for(int i=1;i<titleList.size();i++){
                     String Str = (String) titleList.get(i);
-                    Log.i("data1111","Str="+Str);
+                    //Log.i("data","Str="+Str);
                     data.add(Str);//将题目放进列表中显示
                 }
 
@@ -76,7 +79,7 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
                 Log.i("data","data="+data);
                 if(msg.what==2){
                     List urlList = (List) msg.obj;
-                    Log.i("Note","handleMessage: get urlList"+urlList);
+                    //Log.i("Note","handleMessage: get urlList"+urlList);
                 }
                 super.handleMessage(msg);
             }
@@ -97,12 +100,12 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
     //列表点击事件处理
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.i("Note","ClickItem id="+id);
-        Log.i("Note","data="+data.get(position));
+        //Log.i("Note","ClickItem id="+id);
+        //Log.i("Note","data="+data.get(position));
         int po = titleList.indexOf(data.get(position));
         String url = (String) urlList.get(po);
         url = "https://you.ctrip.com"+url;
-        Log.i("Note","url="+url);
+        //Log.i("Note","url="+url);
 
         //打开当前url对应网页
         Intent intent = new Intent();
